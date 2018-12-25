@@ -33,3 +33,6 @@ def get_most_frequent_topics(topic_info):
         output.append(output_for_topic)
         topic_index += 1
     return output
+
+def postprocess_frequent_phrase(frequent_phrases):
+	pass

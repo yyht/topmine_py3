@@ -107,7 +107,7 @@ def main(_):
 		"document_phrase_topics":document_phrase_topics,
 		"topics":topics,
 		"most_frequent_topics":most_frequent_topics},
-		open(FLAGS.ouput_file+"/mining_info.pkl", "rb"))
+		open(FLAGS.ouput_file+"/mining_info.pkl", "wb"))
 
 if __name__ == "__main__":
 	tf.app.run()
