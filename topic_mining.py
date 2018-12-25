@@ -91,7 +91,7 @@ def main(_):
 	plda = phrase_lda.PhraseLDA( partitioned_docs, vocab_file, num_topics , 
 				alpha, beta, iteration, optimization_iterations, optimization_burnin);
 
-	document_phrase_topics, most_frequent_topics = plda.run()
+	document_phrase_topics, most_frequent_topics, topics = plda.run()
 
 	stored_topics_path = FLAGS.ouput_file + "/doc_phrase_topics.txt"
 	utils.store_phrase_topics(document_phrase_topics,
@@ -99,6 +99,15 @@ def main(_):
 	most_frequent_topic_prefix_path = FLAGS.ouput_file + "/frequent_phrase_topics.txt"
 	utils.store_most_frequent_topics(most_frequent_topics,
 									prefix_path=most_frequent_topic_prefix_path)
+
+	import _pickle as pkl
+	pkl.dump({"frequent_phrases":frequent_phrases,
+		"index_vocab":index_vocab,
+		"partitioned_docs":partitioned_docs,
+		"document_phrase_topics":document_phrase_topics,
+		"topics":topics,
+		"most_frequent_topics":most_frequent_topics},
+		open(FLAGS.ouput_file+"/mining_info.pkl", "rb"))
 
 if __name__ == "__main__":
 	tf.app.run()

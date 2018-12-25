@@ -185,7 +185,7 @@ class PhraseLDA(object):
                 self._optimize_hyperparameters()
         
         topics = self._getTopics()
-        return self.documents_phrases_topic, self._getMostFrequentPhrasalTopics(topics)
+        return self.documents_phrases_topic, self._getMostFrequentPhrasalTopics(topics), topics
 
     def _optimize_hyperparameters(self):
         self._init_topic_document_histogram()
