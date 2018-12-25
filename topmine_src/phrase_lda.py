@@ -1,5 +1,5 @@
 from __future__ import division
-import dirichlet
+from topmine_src import dirichlet
 import random
 import utils
 import math
