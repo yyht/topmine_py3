@@ -58,7 +58,7 @@ flags.DEFINE_integer(
 def main(_):
 	stop_word_file = FLAGS.stop_word_file
 
-	file_name = FLAGS.ouput_file + "/_{}.txt".format(FLAGS.input_name)
+	file_name = FLAGS.train_file
 	
 	phrase_miner = phrase_mining.PhraseMining(file_name, min_support, max_phrase_size, alpha, stop_word_file)
 	partitioned_docs, index_vocab = phrase_miner.mine()
