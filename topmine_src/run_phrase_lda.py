@@ -1,6 +1,6 @@
-import phrase_lda
+from topmine_src import phrase_lda
 import sys
-import utils
+from topmine_src import utils
 
 arguments = sys.argv
 

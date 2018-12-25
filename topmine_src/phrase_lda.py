@@ -1,7 +1,7 @@
 from __future__ import division
 from topmine_src import dirichlet
 import random
-import utils
+from topmine_src import utils
 import math
 from collections import Counter
 
