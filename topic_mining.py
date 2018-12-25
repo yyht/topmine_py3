@@ -80,7 +80,7 @@ def main(_):
 
 	frequent_phrase_path = FLAGS.ouput_file + "/frequent_phrases.txt"
 	utils.store_frequent_phrases(frequent_phrases, 
-								 path="frequent_phrase_path")
+								 path=frequent_phrase_path)
 	print("{}: total frequent phrases {}".format(file_name, len(frequent_phrases)))
 	
 	print('Running PhraseLDA...')
