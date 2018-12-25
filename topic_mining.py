@@ -59,7 +59,16 @@ def main(_):
 	stop_word_file = FLAGS.stop_word_file
 
 	file_name = FLAGS.train_file
-	
+
+	min_support = FLAGS.min_support
+	max_phrase_size = FLAGS.max_phrase_size
+	alpha = FLAGS.alpha
+	beta = FLAGS.beta
+	iteration = FLAGS.iteration
+	num_topics = FLAGS.num_topics
+	optimization_iterations = FLAGS.optimization_iterations
+	optimization_burnin = FLAGS.optimization_burnin
+
 	phrase_miner = phrase_mining.PhraseMining(file_name, min_support, max_phrase_size, alpha, stop_word_file)
 	partitioned_docs, index_vocab = phrase_miner.mine()
 	frequent_phrases = phrase_miner.get_frequent_phrases(min_support)
@@ -79,7 +88,8 @@ def main(_):
 	partitioned_docs = utils.load_partitioned_docs(path=partioned_docs_path)
 	vocab_file = utils.load_vocab(path=vocab_path)
 
-	plda = phrase_lda.PhraseLDA( partitioned_docs, vocab_file, num_topics , alpha, beta, iteration, optimization_iterations, optimization_burnin);
+	plda = phrase_lda.PhraseLDA( partitioned_docs, vocab_file, num_topics , 
+				alpha, beta, iteration, optimization_iterations, optimization_burnin);
 
 	document_phrase_topics, most_frequent_topics = plda.run()
 
