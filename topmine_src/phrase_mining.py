@@ -142,20 +142,23 @@ class PhraseMining(object):
         @phrase2: second phrase
         @hash_counter: map from phrases to their respective raw frequency
         @total_words: total count of the words in input corpus.
+        high significance
+        indicates a high-belief that two phrases are highly associated
+        and should be merged
         """
         combined_phrase = phrase1+" "+phrase2
         combined_size = len(combined_phrase.split())
-        actual_occurence = hash_counter[combined_phrase]
-        numerator = hash_counter[phrase1]*hash_counter[phrase2]
+        actual_occurence = hash_counter[combined_phrase] # merged phrases c(x,y), 
+        numerator = hash_counter[phrase1]*hash_counter[phrase2] # c(x)c(y)
         
         if actual_occurence == 0:
             return float("-inf")
         
-        denominator = total_words * total_words
-        independent_prob = numerator/denominator
-        independent_prob *= 2
+        denominator = total_words * total_words # c(total)c(total)
+        independent_prob = numerator/denominator # c(x)c(y)/(c(total)c(total))
+        independent_prob *= 2 # non-order 2*p(x)p(y)
         
-        expected_occurence = independent_prob*total_words
+        expected_occurence = independent_prob*total_words # independent occurrance
         
         return (actual_occurence-expected_occurence)/math.sqrt(max(actual_occurence, expected_occurence))
 
