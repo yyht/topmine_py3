@@ -29,7 +29,7 @@ flags.DEFINE_string(
     "class-related topic and class-unrelated topic")
 
 flags.DEFINE_path(
-    "id2label_path", None,
+    "data_path", None,
     "Input TF example files (can be a glob or comma separated).")
 
 flags.DEFINE_string(
@@ -54,6 +54,16 @@ def get_topics(mining_info):
 
 def get_index_word(mining_info):
 	return mining_info["index_vocab"]
+
+def get_id2label(data_path):
+    with open(data_path, "r") as frobj:
+        id2label = OrderedDict()
+        for i, line in enumerate(frobj):
+            content = line.strip().split()
+            label = content[0].split("__label__")[1]
+            id2label[i] = label
+
+    return id2label
 
 def get_most_frequent_topics(mining_info):
 	topics = get_topics(mining_info)
@@ -91,14 +101,15 @@ def get_label_mapping(label_mapping_path):
         return mapping_dict
 
 def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
-                id2label_path, label_mapping_path, output_path, **kargs):
+                data_path, label_mapping_path, output_path, **kargs):
 
     label_mapping = get_label_mapping(label_mapping_path)
+    indexer = mining_info["frequent_phrases"]["indexer"]["partitioned_docs_indexer"]
 
     docs = utils.load_partitioned_docs(doc_path)
     index_word = utils.load_vocab(vocab_path)
 
-    id2label = json.load(open(id2label_path, "r"))
+    id2label = get_id2label(data_path)
 
     str_lst = []
     for i, doc in enumerate(docs):
