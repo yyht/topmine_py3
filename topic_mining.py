@@ -6,6 +6,8 @@ import numpy as np
 
 import tensorflow as tf
 
+import _pickle as pkl
+
 flags = tf.flags
 
 FLAGS = flags.FLAGS
@@ -70,7 +72,7 @@ def main(_):
 	optimization_burnin = FLAGS.optimization_burnin
 
 	phrase_miner = phrase_mining.PhraseMining(file_name, min_support, max_phrase_size, alpha, stop_word_file)
-	partitioned_docs, index_vocab = phrase_miner.mine()
+	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine()
 	frequent_phrases = phrase_miner.get_frequent_phrases(min_support)
 	partioned_docs_path = FLAGS.ouput_file + "/partioned_docs.txt"
 	utils.store_partitioned_docs(partitioned_docs, 
@@ -103,7 +105,8 @@ def main(_):
 	import _pickle as pkl
 	pkl.dump({"frequent_phrases":frequent_phrases,
 		"index_vocab":index_vocab,
-		"partitioned_docs":partitioned_docs},
+		"partitioned_docs":partitioned_docs,
+		"indexer":partitioned_indexer},
 		open(FLAGS.ouput_file+"/mining_info.pkl", "wb"))
 	# pkl.dump({"frequent_phrases":frequent_phrases,
 	# 	"index_vocab":index_vocab,
