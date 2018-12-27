@@ -1,7 +1,7 @@
 python topic_mining.py \
-	--train_file "/data/xuht/websiteanalyze-data-seqing20180821/raw_data/seqing_20180821_0.txt" \
+	--train_file "/data/xuht/websiteanalyze-data-seqing20180821/raw_data/seqing_20180821_4.txt" \
 	--stop_word_file "/data/xuht/stopwords-zh-master/stopwords-zh.txt" \
-	--ouput_file "/data/xuht/websiteanalyze-data-seqing20180821/topic_data/0" \
+	--ouput_file "/data/xuht/websiteanalyze-data-seqing20180821/topic_data/4" \
 	--num_topics 2 \
 	--iteration 1000 \
 	--optimization_burnin 100 \
