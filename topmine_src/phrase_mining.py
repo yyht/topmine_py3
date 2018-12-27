@@ -4,6 +4,7 @@ from collections import Counter
 import math
 import heapq
 import sys
+from collections import OrderedDict
 
 class PhraseMining(object):
     """
@@ -142,20 +143,23 @@ class PhraseMining(object):
         @phrase2: second phrase
         @hash_counter: map from phrases to their respective raw frequency
         @total_words: total count of the words in input corpus.
+        high significance
+        indicates a high-belief that two phrases are highly associated
+        and should be merged
         """
         combined_phrase = phrase1+" "+phrase2
         combined_size = len(combined_phrase.split())
-        actual_occurence = hash_counter[combined_phrase]
-        numerator = hash_counter[phrase1]*hash_counter[phrase2]
+        actual_occurence = hash_counter[combined_phrase] # merged phrases c(x,y), 
+        numerator = hash_counter[phrase1]*hash_counter[phrase2] # c(x)c(y)
         
         if actual_occurence == 0:
             return float("-inf")
         
-        denominator = total_words * total_words
-        independent_prob = numerator/denominator
-        independent_prob *= 2
+        denominator = total_words * total_words # c(total)c(total)
+        independent_prob = numerator/denominator # c(x)c(y)/(c(total)c(total))
+        independent_prob *= 2 # non-order 2*p(x)p(y)
         
-        expected_occurence = independent_prob*total_words
+        expected_occurence = independent_prob*total_words # independent occurrance
         
         return (actual_occurence-expected_occurence)/math.sqrt(max(actual_occurence, expected_occurence))
 
@@ -245,16 +249,25 @@ class PhraseMining(object):
         f = open(filename, 'r')
         documents = []
         document_range = []
+        self.document_indexer = OrderedDict()
         i = 0
         num_docs = 0
-        for line in f:
+        for index, line in enumerate(f):
             line = line.strip()
             line_lowercase = line.lower()
-            sentences_no_punc = re.split(r"[.,;!?]",line_lowercase)
+            sentences_no_punc = re.split(r"[.,;!?.。？！]",line_lowercase)
             stripped_sentences = []
             for sentence in sentences_no_punc:
-                stripped_sentences.append(sentence)
-#                 stripped_sentences.append(re.sub('[^A-Za-z0-9]+', ' ', sentence))
+                sentence_no_stopword = " ".join([word for word in sentence.split() if word not in stopwords])
+                if len(sentence_no_stopword) >= 2:
+                    stripped_sentences.append(sentence_no_stopword)
+
+            sentence_string = "".join("".join(stripped_sentences).split())
+            if sentence_string not in self.document_indexer:
+                self.document_indexer[sentence_string] = [index]
+            else:
+                self.document_indexer[sentence_string].append(index)
+
             sentences_no_punc = stripped_sentences
             i += len(sentences_no_punc)
             document_range.append(i)
@@ -268,9 +281,27 @@ class PhraseMining(object):
         for doc in documents:
             documents2.append(' '.join([word for word in doc.split() if word not in stopwords]))
 
+        assert len(documents) == len(documents2)
+
         documents = documents2[:]
 
         return documents, document_range, num_docs
+
+    def _get_partitioned_docs_index(self, partitioned_docs):
+        partitioned_indexer = OrderedDict()
+        string_segmented_partition_indexer = OrderedDict()
+        for doc in partitioned_docs: # doc is a list of phrases
+            try:
+                doc_string = []
+                for sub_doc in doc:
+                    doc_string.append("".join(sub_doc.split()))
+                partitioned_indexer["".join(doc_string)] = self.document_indexer["".join(doc_string)]
+                string_segmented_partition_indexer["".join(doc_string)] = doc
+            except:
+                continue
+                
+        return {"partitioned_docs_indexer":partitioned_indexer,
+                "string_segmented_partition":string_segmented_partition_indexer}
 
     def _run_phrase_mining(self, min_support, max_phrase_size, alpha, file_name):
         """
@@ -305,8 +336,9 @@ class PhraseMining(object):
 
         partitioned_docs = self._get_partitioned_docs(document_range, doc_phrases)
         self._process_partitioned_docs(partitioned_docs)
+        partitioned_indexer = self._get_partitioned_docs_index(partitioned_docs)
 
-        return self.partitioned_docs, self.index_vocab
+        return self.partitioned_docs, self.index_vocab, partitioned_indexer
 
     def get_frequent_phrases(self, min_support):
         """
