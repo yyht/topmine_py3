@@ -140,10 +140,13 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 
         pattern = [re.sub(" ", "", sub_pattern) for sub_pattern in pattern]
 
-        string_s = "".join(s.split())
-        string_id = indexer.get(string_s, "none")
+        doc_string = []
+        for sub_doc in s:
+            doc_string.append("".join(sub_doc.split()))
 
-        label_id = indexer.get(string_id, "0")
+        string_id = indexer.get(doc_string, "none")
+
+        label_id = id2label.get(string_id, "0")
         cn_label = label_mapping[label_id]
 
         indicator_lst.append({"indicator":indicator,
