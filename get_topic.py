@@ -171,8 +171,8 @@ def main(_):
 
 	print("===filtered phrases===", len(filtered_phrases))
 
-	indicator_lst = get_indicator(mining_info, prediction_info, FLAGS.doc_path, 
-				FLAGS.vocab_path, FLAGS.id2label_path, 
+	indicator_lst = get_indicator(mining_info, prediction_info, 
+				FLAGS.doc_path, FLAGS.vocab_path, 
 				FLAGS.label_mapping_path, FLAGS.output_path)
 
 if __name__ == "__main__":
