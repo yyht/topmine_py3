@@ -28,7 +28,7 @@ flags.DEFINE_string(
 	"vocab_path", None,
 	"class-related topic and class-unrelated topic")
 
-flags.DEFINE_path(
+flags.DEFINE_string(
 	"data_path", None,
 	"Input TF example files (can be a glob or comma separated).")
 
