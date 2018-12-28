@@ -142,10 +142,10 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 					pattern.append(sub_s)
 
 		pattern = [re.sub(" ", "", sub_pattern) for sub_pattern in pattern]
+		doc_string = "".join("".join(s).split())
 
-		doc_string = []
-		for sub_doc in s:
-			doc_string.append("".join(sub_doc.split()))
+		if s_index == 0:
+			print(doc_string)
 
 		string_id = indexer.get(doc_string, "none")
 
