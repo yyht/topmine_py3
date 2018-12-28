@@ -1,6 +1,6 @@
 from collections import Counter
 import _pickle as pkl
-from topmine_scr import utils
+from topmine_src import utils
 import tensorflow as tf
 from fuzzywuzzy import fuzz
 import re
