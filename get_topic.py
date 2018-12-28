@@ -122,6 +122,7 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 		str_lst.append(string)
 
 	phrases = parse_phrases(mining_info, prediction_info)
+	print("==filtered phrases==", len(phrases))
 	indicator_lst = []
 
 	for s_index, s in enumerate(str_lst):
@@ -168,11 +169,6 @@ def main(_):
 
 	mining_info = pkl.load(open(FLAGS.mining_path, "rb"))
 	prediction_info = pkl.load(open(FLAGS.prediction_path, "rb"))
-
-	filtered_phrases = parse_phrases(mining_info, prediction_info)
-
-	print("===filtered phrases===", len(filtered_phrases))
-
 	indicator_lst = get_indicator(mining_info, prediction_info, 
 				FLAGS.doc_path, FLAGS.vocab_path, FLAGS.data_path,
 				FLAGS.label_mapping_path, FLAGS.output_path)
