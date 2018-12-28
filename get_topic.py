@@ -121,8 +121,6 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 			string.append((" ".join([index_word[index] for index in sub_word])))
 		str_lst.append(string)
 
-	print(str_lst[0:10])
-
 	phrases = parse_phrases(mining_info, prediction_info)
 	print("==filtered phrases==", len(phrases))
 	indicator_lst = []
@@ -151,6 +149,9 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 			print(doc_string)
 
 		string_id = indexer.get(doc_string, "none")
+
+		if s_index == 0:
+			print(string_id)
 
 		label_id = id2label.get(string_id, "0")
 		cn_label = label_mapping[label_id]
