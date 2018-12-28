@@ -154,20 +154,17 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 			print(string_id)
 
 		if string_id != "none":
-			assert len(string_id) == 1
-
-		if len(string_id) == 1:
-
-			label_id = id2label.get(string_id[0], "0")
-			cn_label = label_mapping[label_id]
-
-			indicator_lst.append({"indicator":indicator,
-								"segmented_sentence":s,
-								 "pattern":"&".join(pattern),
-								 "doc2string_index":string_id,
-								 "label_id":label_id,
-								 "cn_label":cn_label
-								 })
+			for idx in string_id:
+				label_id = id2label.get(idx, "0")
+				cn_label = label_mapping[label_id]
+				indicator_lst.append({"indicator":indicator,
+									"segmented_sentence":s,
+									 "pattern":"&".join(pattern),
+									 "doc2string_index":idx,
+									 "string_id":string_id,
+									 "label_id":label_id,
+									 "cn_label":cn_label
+									 })
 
 	pkl.dump(indicator_lst, open(output_path, "wb"))
 
