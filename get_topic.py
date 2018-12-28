@@ -153,6 +153,9 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 		if s_index == 0:
 			print(string_id)
 
+		if string_id != "none":
+			assert len(string_id) == 1
+
 		label_id = id2label.get(string_id, "0")
 		cn_label = label_mapping[label_id]
 
