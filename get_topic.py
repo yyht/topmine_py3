@@ -121,7 +121,7 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 			string.append((" ".join([index_word[index] for index in sub_word])))
 		str_lst.append(string)
 
-	print(str_lstp0:10)
+	print(str_lst[0:10])
 
 	phrases = parse_phrases(mining_info, prediction_info)
 	print("==filtered phrases==", len(phrases))
