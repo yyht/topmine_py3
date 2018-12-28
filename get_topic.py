@@ -87,6 +87,7 @@ def parse_phrases(mining_info, prediction_info):
 	pred = prediction_info["pred_label"]
 
 	indexer = mining_info["indexer"]["partitioned_docs_indexer"]
+	filtered = []
 
 	for p, d in zip(pred, data):
 		if p == 0:
