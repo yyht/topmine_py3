@@ -252,8 +252,11 @@ class PhraseMining(object):
         self.document_indexer = OrderedDict()
         i = 0
         num_docs = 0
-        for index, line in enumerate(f):
-            line = line.strip()
+        for index, f_line in enumerate(f):
+            f_line = f_line.strip()
+            line = " ".join(f_line.split()[1:])
+            if index <= 10:
+                print(line)
             line_lowercase = line.lower()
             sentences_no_punc = re.split(r"[.,;!?.。？！]",line_lowercase)
             stripped_sentences = []
