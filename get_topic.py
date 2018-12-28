@@ -163,8 +163,8 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 
 def main(_):
 
-	mining_info = pkl.load(open(FLAGS.mining_path))
-	prediction_info = pkl.load(open(FLAGS.prediction_path))
+	mining_info = pkl.load(open(FLAGS.mining_path, "rb"))
+	prediction_info = pkl.load(open(FLAGS.prediction_path, "rb"))
 
 	filtered_phrases = parse_phrases(mining_info, prediction_info)
 
