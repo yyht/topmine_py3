@@ -7,6 +7,8 @@ import re
 import _pickle as pkl
 import json
 
+from collections import OrderedDict
+
 flags = tf.flags
 
 FLAGS = flags.FLAGS
