@@ -269,7 +269,7 @@ class PhraseMining(object):
             for sentence in sentences_no_punc:
                 sentence_no_stopword = " ".join([word for word in sentence.split() if word not in stopwords])
                 cn_word_num = len(ch_pattern.findall(sentence_no_stopword))
-                if len(sentence_no_stopword) >= 2 and len(cn_word_num) >= 1:
+                if len(sentence_no_stopword) >= 2 and cn_word_num >= 1:
                     stripped_sentences.append(sentence_no_stopword)
 
             sentence_string = "".join("".join(stripped_sentences).split())
