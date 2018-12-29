@@ -123,6 +123,9 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 
 	phrases = parse_phrases(mining_info, prediction_info)
 	print("==filtered phrases==", len(phrases))
+
+	pkl.dump(phrases, open(output_path+"/valid_phrases.pkl", "wb"))
+
 	indicator_lst = []
 
 	for s_index, s in enumerate(str_lst):
@@ -153,6 +156,8 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 		if s_index == 0:
 			print(string_id)
 
+		print(id2label, type(list(id2label.keys())[0]))
+
 		if string_id != "none":
 			for idx in string_id:
 				label_id = id2label.get(idx, "0")
@@ -166,7 +171,7 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 									 "cn_label":cn_label
 									 })
 
-	pkl.dump(indicator_lst, open(output_path, "wb"))
+	pkl.dump(indicator_lst, open(output_path+"/mining_info", "wb"))
 
 	return indicator_lst
 
