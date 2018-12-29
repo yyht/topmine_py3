@@ -132,9 +132,7 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 		indicator = [0]*len(s)
 		pattern = []
 		for index, sub_s in enumerate(s):
-			print(sub_s)
 			if sub_s in phrases:
-				print(sub_s)
 				indicator[index] = 1
 				if len(pattern) >= 1:
 					flag = 0
