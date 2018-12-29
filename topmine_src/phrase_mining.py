@@ -6,6 +6,12 @@ import heapq
 import sys
 from collections import OrderedDict
 
+CH_PUNCTUATION = u"[＂＃＄％＆＇，：；＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。]"
+EN_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~']"
+
+symbol_pattern = re.compile(CH_PUNCTUATION)
+ch_pattern = re.compile(u"[\u4e00-\u9fa5]+")
+
 class PhraseMining(object):
     """
     PhraseMining performs frequent pattern mining followed by agglomerative clustering
@@ -258,11 +264,12 @@ class PhraseMining(object):
             if index <= 10:
                 print(line)
             line_lowercase = line.lower()
-            sentences_no_punc = re.split(r"[.,;!?.。？！]",line_lowercase)
+            sentences_no_punc = symbol_pattern.split(line_lowercase)
             stripped_sentences = []
             for sentence in sentences_no_punc:
                 sentence_no_stopword = " ".join([word for word in sentence.split() if word not in stopwords])
-                if len(sentence_no_stopword) >= 2:
+                cn_word_num = len(ch_pattern.findall(sentence_no_stopword))
+                if len(sentence_no_stopword) >= 2 and len(cn_word_num) >= 1:
                     stripped_sentences.append(sentence_no_stopword)
 
             sentence_string = "".join("".join(stripped_sentences).split())
