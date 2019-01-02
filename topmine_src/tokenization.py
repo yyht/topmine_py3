@@ -56,7 +56,7 @@ class SPM(object):
 		param += "--character_coverage={}".format(self.config.get("character_coverage", "0.995"))
 		try:
 			spm.SentencePieceTrainer.Train(param)
-			self.sp.Load(self.config["model_prefix"])
+			self.sp.Load(self.config["model_prefix"]+".model")
 		except:
 			raise ValueError(" training word piece model failed ")
 
