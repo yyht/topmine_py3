@@ -1,11 +1,16 @@
 from topmine_src import tokenization
 import tensorflow as tf
+from topmine_src import prepare_input
 
 flags = tf.flags
 
 FLAGS = flags.FLAGS
 
 ## Required parameters
+flags.DEFINE_string(
+	"raw_corpus", None,
+	"Input TF example files (can be a glob or comma separated).")
+
 flags.DEFINE_string(
 	"corpus", None,
 	"Input TF example files (can be a glob or comma separated).")
@@ -27,6 +32,16 @@ flags.DEFINE_float(
 	"Input TF example files (can be a glob or comma separated).")
 
 def main(_):
+
+	with open(FLAGS.raw_corpus, "r") as frobj:
+		lines = frobj.read().splitlines()
+
+	data = [item.split(",")[1] for item in lines]
+	data = [prepare_input.clean(item) for item in data]
+	with open(FLAGS.corpus, "w") as fwobj:
+		for item in data:
+			fwobj.write(item+"\n")
+
 	config = {}
 	config["corpus"] = FLAGS.corpus
 	config["model_prefix"] = FLAGS.model_prefix
