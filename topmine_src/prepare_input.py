@@ -15,8 +15,8 @@ symbol_pattern = re.compile(CH_PUNCTUATION)
 ch_pattern = re.compile(u"[\u4e00-\u9fa5]+")
 
 DataPrepare = {
-	"seqing":StarSapce,
-	"product_yancao":OdpsCSV
+	"seqing":TextReader,
+	"product_yancao":TextReader
 }
 
 from hanziconv import HanziConv
