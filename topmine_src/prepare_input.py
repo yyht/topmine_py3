@@ -54,6 +54,7 @@ def clean(text):
 	text = full2half(text)
 	text = re.sub("\\#.*?#|\\|.*?\\||\\[.*?]", "", text)
 	text = re.sub("\s*", "", text)
+	text = text.lower()
 	return text
 
 class BaseReader(object):
