@@ -54,11 +54,11 @@ class SPM(object):
 		param += "--vocab_size={} ".format(self.config["vocab_size"])
 		param += "--model_type={} ".format(self.config.get("model_type", "unigram"))
 		param += "--character_coverage={}".format(self.config.get("character_coverage", "0.995"))
-		# try:
-		self.sp.SentencePieceTrainer.Train(param)
-		self.sp.Load(self.config["model_prefix"])
-		# except:
-		# 	raise ValueError(" training word piece model failed ")
+		try:
+			spm.SentencePieceTrainer.Train(param)
+			self.sp.Load(self.config["model_prefix"])
+		except:
+			raise ValueError(" training word piece model failed ")
 
 	def tokenize(self, text):
 		tokenized_text = self.sp.EncodeAsPieces(text)
