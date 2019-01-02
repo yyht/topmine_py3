@@ -28,7 +28,7 @@ flags.DEFINE_float(
 
 def main(_):
 	config = {}
-	config["input"] = FLAGS.corpus
+	config["corpus"] = FLAGS.corpus
 	config["model_prefix"] = FLAGS.model_prefix
 	config["vocab_size"] = FLAGS.vocab_size
 	config["model_type"] = FLAGS.model_type
