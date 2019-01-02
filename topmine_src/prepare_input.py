@@ -75,6 +75,7 @@ class BaseReader(object):
 		pass
 
 class TextReader(BaseReader):
+	""""""
 	def __init__(self):
 		super(TextReader, self).__init__()
 
