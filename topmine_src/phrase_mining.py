@@ -6,11 +6,13 @@ import heapq
 import sys
 from collections import OrderedDict
 
-CH_PUNCTUATION = u"[＂＃＄％＆＇，：；＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。]"
-EN_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~']"
+from topmine_src.prepare_input import TextReader
 
-symbol_pattern = re.compile(CH_PUNCTUATION)
-ch_pattern = re.compile(u"[\u4e00-\u9fa5]+")
+# CH_PUNCTUATION = u"[＂＃＄％＆＇，：；＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。]"
+# EN_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~']"
+
+# symbol_pattern = re.compile(CH_PUNCTUATION)
+# ch_pattern = re.compile(u"[\u4e00-\u9fa5]+")
 
 class PhraseMining(object):
     """
@@ -248,72 +250,62 @@ class PhraseMining(object):
                 document_of_phrases.append(phrases_of_words)
             self.partitioned_docs.append(document_of_phrases)
 
-    def _preprocess_input(self, filename, stopwords):
-        """
-        Performs preprocessing on the input document. Includes stopword removal.
-        """
-        f = open(filename, 'r')
-        documents = []
-        document_range = []
-        self.document_indexer = OrderedDict()
-        i = 0
-        num_docs = 0
-        for index, f_line in enumerate(f):
-            f_line = f_line.strip()
-            line = " ".join(f_line.split()[1:])
-            if index <= 10:
-                print(line)
-            line_lowercase = line.lower()
-            sentences_no_punc = symbol_pattern.split(line_lowercase)
-            stripped_sentences = []
-            for sentence in sentences_no_punc:
-                sentence_no_stopword = " ".join([word for word in sentence.split() if word not in stopwords])
-                cn_word_num = len(ch_pattern.findall(sentence_no_stopword))
-                if len(sentence_no_stopword) >= 2 and cn_word_num >= 1:
-                    stripped_sentences.append(sentence_no_stopword)
+    # def _preprocess_input(self, filename, stopwords):
+    #     """
+    #     Performs preprocessing on the input document. Includes stopword removal.
+    #     """
+    #     f = open(filename, 'r')
+    #     self.doc_range2doc = OrderedDict()
+    #     documents = []
+    #     document_range = []
+    #     i = 0
+    #     num_docs = 0
+    #     for index, f_line in enumerate(f):
+    #         f_line = f_line.strip()
+    #         line = " ".join(f_line.split()[1:])
+    #         if index <= 10:
+    #             print(line)
+    #         line_lowercase = line.lower()
+    #         sentences_no_punc = symbol_pattern.split(line_lowercase)
+    #         stripped_sentences = []
+    #         for sentence in sentences_no_punc:
+    #             sentence_no_stopword = " ".join([word for word in sentence.split() if word not in stopwords])
+    #             stripped_sentences.append(sentence_no_stopword)
 
-            sentence_string = "".join("".join(stripped_sentences).split())
-            if sentence_string not in self.document_indexer:
-                self.document_indexer[sentence_string] = [index]
-            else:
-                self.document_indexer[sentence_string].append(index)
+    #         sentences_no_punc = stripped_sentences
 
-            sentences_no_punc = stripped_sentences
-            i += len(sentences_no_punc)
-            document_range.append(i)
-            documents.extend(sentences_no_punc)
-            num_docs += 1
+    #         self.doc_range2doc[i] = index
 
-        documents = [doc.strip() for doc in documents]
+    #         i += len(sentences_no_punc)
+    #         document_range.append(i)
+    #         documents.extend(sentences_no_punc)
+    #         num_docs += 1
 
-        # remove stop-words
-        documents2 = []
-        for doc in documents:
-            documents2.append(' '.join([word for word in doc.split() if word not in stopwords]))
+    #     documents = [doc.strip() for doc in documents]
 
-        assert len(documents) == len(documents2)
+    #     # remove stop-words
+    #     documents2 = []
+    #     for doc in documents:
+    #         documents2.append(' '.join([word for word in doc.split() if word not in stopwords]))
 
-        documents = documents2[:]
+    #     assert len(documents) == len(documents2)
 
-        return documents, document_range, num_docs
+    #     documents = documents2[:]
 
-    def _get_partitioned_docs_index(self, partitioned_docs):
-        partitioned_indexer = OrderedDict()
-        string_segmented_partition_indexer = OrderedDict()
-        for doc in partitioned_docs: # doc is a list of phrases
-            try:
-                doc_string = []
-                for sub_doc in doc:
-                    doc_string.append("".join(sub_doc.split()))
-                partitioned_indexer["".join(doc_string)] = self.document_indexer["".join(doc_string)]
-                string_segmented_partition_indexer["".join(doc_string)] = doc
-            except:
-                continue
-                
-        return {"partitioned_docs_indexer":partitioned_indexer,
-                "string_segmented_partition":string_segmented_partition_indexer}
+    #     return documents, document_range, num_docs
 
-    def _run_phrase_mining(self, min_support, max_phrase_size, alpha, file_name):
+    def _get_valid_document(self, document_range):
+        valid_document_id = []
+        start = 0
+        end = 0
+        for idx in document_range:
+            end = idx
+            valid_document_id.append(self.doc_range2doc[start])
+            start = end
+        return valid_document_id
+
+    def _run_phrase_mining(self, min_support, max_phrase_size, 
+                            alpha, file_name, parser_fn, tokenization_api):
         """
         Runs the phrase mining algorithm.
 
@@ -326,8 +318,13 @@ class PhraseMining(object):
 
         stopwords = self._get_stopwords()
 
-        documents, document_range, num_docs = self._preprocess_input(file_name, stopwords)
-
+        read_api = TextReader()
+        lines = read_api._read_data(file_name)
+        examples = read_api._create_examples(lines, parser_fn)
+        documents, document_range, num_docs = read_api._preprocess_input(examples, 
+                                                                        stopwords, 
+                                                                        tokenization_api)
+        
         #calculate frequency of all words
         total_words, word_freq, active_indices = self._get_word_freq(documents)
 
@@ -346,9 +343,9 @@ class PhraseMining(object):
 
         partitioned_docs = self._get_partitioned_docs(document_range, doc_phrases)
         self._process_partitioned_docs(partitioned_docs)
-        partitioned_indexer = self._get_partitioned_docs_index(partitioned_docs)
+        valid_document_id = self._get_valid_document(document_range)
 
-        return self.partitioned_docs, self.index_vocab, partitioned_indexer
+        return self.partitioned_docs, self.index_vocab, valid_document_id
 
     def get_frequent_phrases(self, min_support):
         """
