@@ -51,6 +51,12 @@ def main(_):
 	tokenization_api = tokenization.SPM(config)
 	tokenization_api.train_model()
 
+	tokenized_corpus = [tokenization_api.tokenize(text) for text in data]
+	with open(FLAGS.tokenized_text, "w") as fwobj:
+		for text in tokenized_corpus:
+			fwobj.write(text+"\n")
+
+
 
 if __name__ == "__main__":
 	tf.app.run()
