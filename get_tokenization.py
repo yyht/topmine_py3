@@ -1,5 +1,6 @@
 from topmine_src import tokenization
 import tensorflow as tf
+import re
 from topmine_src import prepare_input
 
 flags = tf.flags

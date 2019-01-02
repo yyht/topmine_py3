@@ -1,4 +1,5 @@
 import sentencepiece as spm
+import re
 
 class SPM(object):
 	def __init__(self, config):
