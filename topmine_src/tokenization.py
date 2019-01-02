@@ -63,7 +63,12 @@ class SPM(object):
 	def tokenize(self, text):
 		tokenized_text = self.sp.EncodeAsPieces(text)
 		# tf.logging.info(" text {} token {}".format(text, tokenized_text))
-		return [word for word in tokenized_text if word != "▁"]
+		tmp_text = []
+		for word in tokenized_text:
+			word = re.sub("▁", "", word)
+			if len(word) >= 1:
+				tmp_text.append(word)
+		return tmp_text
 
 	def convert_tokens_to_ids(self, text, unk="[UNK]"):
 		try:
