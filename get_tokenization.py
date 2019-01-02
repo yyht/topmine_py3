@@ -31,6 +31,10 @@ flags.DEFINE_float(
 	"character_coverage", 0.9995,
 	"Input TF example files (can be a glob or comma separated).")
 
+flags.DEFINE_string(
+	"tokenized_text", None,
+	"Input TF example files (can be a glob or comma separated).")
+
 def main(_):
 
 	with open(FLAGS.raw_corpus, "r") as frobj:
