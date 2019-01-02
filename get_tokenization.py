@@ -58,9 +58,7 @@ def main(_):
 	tokenized_corpus = [tokenization_api.tokenize(text) for text in data]
 	with open(FLAGS.tokenized_text, "w") as fwobj:
 		for text in tokenized_corpus:
-			fwobj.write(text+"\n")
-
-
+			fwobj.write(" ".join(text)+"\n")
 
 if __name__ == "__main__":
 	tf.app.run()
