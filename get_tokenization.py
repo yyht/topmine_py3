@@ -19,7 +19,7 @@ flags.DEFINE_integer(
 	"Input TF example files (can be a glob or comma separated).")
 
 flags.DEFINE_string(
-	"model_type", 2,
+	"model_type", "char",
 	"class-related topic and class-unrelated topic")
 
 flags.DEFINE_float(
