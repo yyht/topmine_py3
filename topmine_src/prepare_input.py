@@ -14,11 +14,6 @@ EN_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~']"
 symbol_pattern = re.compile(CH_PUNCTUATION)
 ch_pattern = re.compile(u"[\u4e00-\u9fa5]+")
 
-DataPrepare = {
-	"seqing":TextReader,
-	"product_yancao":TextReader
-}
-
 from hanziconv import HanziConv
 
 import six
@@ -153,6 +148,9 @@ class TextReader(BaseReader):
 
 		return documents, document_range, num_docs
 
-		
+DataPrepare = {
+	"seqing":TextReader,
+	"product_yancao":TextReader
+}
 
 
