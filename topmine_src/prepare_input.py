@@ -76,7 +76,7 @@ class BaseReader(object):
 
 class TextReader(BaseReader):
 	def __init__(self):
-		super(StarSapce, self).__init__()
+		super(TextReader, self).__init__()
 
 	def _read_data(self, input_file, **kargs):
 		with cpdecs.open(input_file, "r", "utf-8") as frobj:
