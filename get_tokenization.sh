@@ -3,6 +3,6 @@ python get_tokenization.py \
 	--corpus "/data/xuht/product/yancao/corpus.txt" \
 	--model_prefix "/data/xuht/product/yancao/unigram" \
 	--vocab_size 10000 \
-	--model_type "bpe" \
-	--character_coverage 0.9995 \
+	--model_type "unigram" \
+	--character_coverage 1.0 \
 	--tokenized_text "/data/xuht/product/yancao/unigram_tokenized.txt"
