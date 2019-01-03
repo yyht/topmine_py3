@@ -74,8 +74,20 @@ def main(_):
 	with open(FLAGS.file_name, "r") as frobj:
 		examples = [line.strip() for line in frobj]
 
-	phrase_miner = phrase_mining.PhraseMining(min_support, max_phrase_size, alpha, stop_word_file)
-	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine(examples)
+	def _get_stopwords(stop_word_path):
+        """
+        Returns a list of stopwords.
+        """
+        stopwords = set()
+        with open(stop_word_path, "r") as frobj:
+            for line in frobj:
+                stopwords.add(line.rstrip())
+        return stopwords
+
+    stopwords = _get_stopwords(FLAGS.stop_word_path)
+
+	phrase_miner = phrase_mining.PhraseMining(min_support, max_phrase_size, alpha)
+	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine(examples, stopwords)
 	frequent_phrases = phrase_miner.get_frequent_phrases(min_support)
 	partioned_docs_path = FLAGS.ouput_file + "/partioned_docs.txt"
 	utils.store_partitioned_docs(partitioned_docs, 

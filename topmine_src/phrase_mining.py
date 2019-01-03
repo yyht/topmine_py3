@@ -47,14 +47,14 @@ class PhraseMining(object):
     """
 
     def __init__(self, min_support=10, max_phrase_size=40, 
-                alpha=4, stop_word_path=""):
+                alpha=4):
         self.min_support = min_support
         self.max_phrase_size = max_phrase_size
         self.alpha = alpha
-        self.stop_word_path = stop_word_path
 
-    def mine(self, examples):
-        return self._run_phrase_mining(self.min_support, self.max_phrase_size, self.alpha, examples)
+    def mine(self, examples, stopwords):
+        return self._run_phrase_mining(self.min_support, self.max_phrase_size, 
+                        self.alpha, examples, stopwords)
 
     def _frequentPatternMining(self, documents, min_support, max_phrase_size, word_freq, active_indices):
         """
@@ -204,16 +204,6 @@ class PhraseMining(object):
 
         return true_counter
 
-    def _get_stopwords(self):
-        """
-        Returns a list of stopwords.
-        """
-        stopwords = set()
-        with open(self.stop_word_path, "r") as frobj:
-            for line in frobj:
-                stopwords.add(line.rstrip())
-        return stopwords
-
     def _get_word_freq(self, documents):
         """
         Calculates the frequency of each word in the input document.
@@ -320,7 +310,7 @@ class PhraseMining(object):
         return valid_document_id
 
     def _run_phrase_mining(self, min_support, max_phrase_size, 
-                            alpha, examples):
+                            alpha, examples, stopwords):
         """
         Runs the phrase mining algorithm.
 
@@ -330,8 +320,6 @@ class PhraseMining(object):
         @alpha: threshold for the significance score
         @file_name: path to the input corpus
         """
-
-        stopwords = self._get_stopwords()
         documents, document_range, num_docs = read_api._preprocess_input(examples, 
                                                                         stopwords)
         
