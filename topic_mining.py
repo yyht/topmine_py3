@@ -71,7 +71,7 @@ def main(_):
 	optimization_iterations = FLAGS.optimization_iterations
 	optimization_burnin = FLAGS.optimization_burnin
 
-	with open(FLAGS.file_name, "r") as frobj:
+	with open(FLAGS.train_file, "r") as frobj:
 		examples = [line.strip() for line in frobj]
 
 	def _get_stopwords(stop_word_path):
