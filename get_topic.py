@@ -107,7 +107,7 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 				data_path, label_mapping_path, output_path, **kargs):
 
 	label_mapping = get_label_mapping(label_mapping_path)
-	indexer = mining_info["indexer"]["partitioned_docs_indexer"]
+	indexer = mining_info["indexer"]
 
 	docs = utils.load_partitioned_docs(doc_path)
 	index_word = utils.load_vocab(vocab_path)
@@ -148,7 +148,7 @@ def get_indicator(mining_info, prediction_info, doc_path, vocab_path,
 		pattern = [re.sub(" ", "", sub_pattern) for sub_pattern in pattern]
 		doc_string = "".join("".join(s).split())
 
-		string_id = indexer.get(doc_string, "none")
+		string_id = [indexer[s_index]]
 
 		if string_id != "none":
 			for idx in string_id:
