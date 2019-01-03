@@ -320,7 +320,7 @@ class PhraseMining(object):
         @alpha: threshold for the significance score
         @file_name: path to the input corpus
         """
-        documents, document_range, num_docs = read_api._preprocess_input(examples, 
+        documents, document_range, num_docs = self._preprocess_input(examples, 
                                                                         stopwords)
         
         #calculate frequency of all words
