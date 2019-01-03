@@ -27,7 +27,6 @@ def full2half(s):
 def clean(text):
     text = text.strip()
     text = full2half(text)
-    text = re.sub("\s*", "", text)
     text = text.lower()
     return text
 
