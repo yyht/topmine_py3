@@ -84,7 +84,7 @@ def main(_):
 				stopwords.add(line.rstrip())
 		return stopwords
 
-	stopwords = _get_stopwords(FLAGS.stop_word_path)
+	stopwords = _get_stopwords(FLAGS.stop_word_file)
 
 	phrase_miner = phrase_mining.PhraseMining(min_support, max_phrase_size, alpha)
 	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine(examples, stopwords)
