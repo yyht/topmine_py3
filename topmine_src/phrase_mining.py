@@ -6,8 +6,8 @@ import heapq
 import sys
 from collections import OrderedDict
 
-CH_PUNCTUATION = u"[＂＃＄％＆＇，：；＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。]"
-EN_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~']"
+CH_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~'＂＃＄％＆＇，：；＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。]"
+# EN_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~']"
 
 symbol_pattern = re.compile(CH_PUNCTUATION)
 ch_pattern = re.compile(u"[\u4e00-\u9fa5]+")
