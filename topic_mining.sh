@@ -1,7 +1,7 @@
 python topic_mining.py \
-	--train_file "/data/xuht/websiteanalyze-data-seqing20180821/seqing_train_20180821" \
+	--train_file "/data/xuht/product/yancao/corpus.txt" \
 	--stop_word_file "/data/xuht/stopwords-zh-master/stopwords-zh.txt" \
-	--ouput_file "/data/xuht/websiteanalyze-data-seqing20180821/global_mining" \
+	--ouput_file "/data/xuht/product/yancao" \
 	--num_topics 2 \
 	--iteration 1000 \
 	--optimization_burnin 100 \
