@@ -71,8 +71,11 @@ def main(_):
 	optimization_iterations = FLAGS.optimization_iterations
 	optimization_burnin = FLAGS.optimization_burnin
 
-	phrase_miner = phrase_mining.PhraseMining(file_name, min_support, max_phrase_size, alpha, stop_word_file)
-	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine()
+	with open(FLAGS.file_name, "r") as frobj:
+		examples = [line.strip() for line in frobj]
+
+	phrase_miner = phrase_mining.PhraseMining(min_support, max_phrase_size, alpha, stop_word_file)
+	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine(examples)
 	frequent_phrases = phrase_miner.get_frequent_phrases(min_support)
 	partioned_docs_path = FLAGS.ouput_file + "/partioned_docs.txt"
 	utils.store_partitioned_docs(partitioned_docs, 

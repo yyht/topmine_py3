@@ -1,7 +1,7 @@
 from topmine_src import tokenization
 import tensorflow as tf
 import re
-from topmine_src import prepare_input
+from topmine_src import phrase_mining
 
 flags = tf.flags
 
@@ -42,7 +42,7 @@ def main(_):
 		lines = frobj.read().splitlines()
 
 	data = [item.split(",")[1] for item in lines]
-	data = [prepare_input.clean(item) for item in data]
+	data = [phrase_mining.clean(item) for item in data]
 	with open(FLAGS.corpus, "w") as fwobj:
 		for item in data:
 			fwobj.write(item+"\n")
