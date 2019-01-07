@@ -79,7 +79,7 @@ def main(_):
 		tmp = []
 		for example in examples:
 			re_pattern = "({}{})".format("__label__", "\d.")
-			element_list = re.split(re_pattern, line)
+			element_list = re.split(re_pattern, example)
 			tmp.append(element_list[-1])
 		examples = set(tmp)
 		print(len(examples), "===after removing duplicate===")
