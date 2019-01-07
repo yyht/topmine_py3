@@ -6,7 +6,7 @@ import heapq
 import sys
 from collections import OrderedDict
 
-CH_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~'＂＃＄％＆＇，：；＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。]"
+CH_PUNCTUATION = u"['\\\\n!#$%&\'()*+,-/:;<=>.?@[\\]^_`{|}~'＂＃＄％＆＇，：；＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。]"
 # EN_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~']"
 
 symbol_pattern = re.compile(CH_PUNCTUATION)
@@ -273,7 +273,7 @@ class PhraseMining(object):
             sentences_no_punc = symbol_pattern.split(line_lowercase)
             stripped_sentences = []
             for sentence in sentences_no_punc:
-                sentence_no_stopword = " ".join([word for word in sentence.split() if word not in stopwords])
+                sentence_no_stopword = " ".join([word.strip() for word in sentence.split() if word.strip() not in stopwords])
                 stripped_sentences.append(sentence_no_stopword)
 
             sentences_no_punc = stripped_sentences
@@ -290,7 +290,7 @@ class PhraseMining(object):
         # remove stop-words
         documents2 = []
         for doc in documents:
-            documents2.append(' '.join([word for word in doc.split() if word not in stopwords]))
+            documents2.append(' '.join([word.strip() for word in doc.split() if word.strip() not in stopwords]))
 
         assert len(documents) == len(documents2)
 

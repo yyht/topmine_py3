@@ -73,6 +73,7 @@ def main(_):
 
 	with open(FLAGS.train_file, "r") as frobj:
 		examples = [line.strip() for line in frobj]
+		examples = set(examples)
 
 	def _get_stopwords(stop_word_path):
 		"""
