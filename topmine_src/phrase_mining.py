@@ -273,7 +273,7 @@ class PhraseMining(object):
             sentences_no_punc = symbol_pattern.split(line_lowercase)
             stripped_sentences = []
             for sentence in sentences_no_punc:
-                sentence_no_stopword = " ".join([word.strip() for word in sentence.split() if word.strip() not in stopwords])
+                sentence_no_stopword = " ".join([word.strip() for word in sentence.strip().split() if word.strip() not in stopwords])
                 stripped_sentences.append(sentence_no_stopword)
 
             sentences_no_punc = stripped_sentences
@@ -290,7 +290,7 @@ class PhraseMining(object):
         # remove stop-words
         documents2 = []
         for index, doc in enumerate(documents):
-            documents2.append(' '.join([word.strip() for word in doc.split() if word.strip() not in stopwords]))
+            documents2.append(' '.join([word.strip() for word in doc.strip().split() if word.strip() not in stopwords]))
             if index <= 20:
                 print(documents2[index])
 
