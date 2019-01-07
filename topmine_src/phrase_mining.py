@@ -289,8 +289,11 @@ class PhraseMining(object):
 
         # remove stop-words
         documents2 = []
-        for doc in documents:
+        for index, doc in enumerate(documents):
             documents2.append(' '.join([word.strip() for word in doc.split() if word.strip() not in stopwords]))
+            if index <= 20:
+                print(documents2[index])
+
 
         assert len(documents) == len(documents2)
 

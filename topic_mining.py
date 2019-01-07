@@ -73,7 +73,9 @@ def main(_):
 
 	with open(FLAGS.train_file, "r") as frobj:
 		examples = [line.strip() for line in frobj]
+		print(len(examples), "===before removing duplicate===")
 		examples = set(examples)
+		print(len(examples), "===after removing duplicate===")
 
 	def _get_stopwords(stop_word_path):
 		"""
