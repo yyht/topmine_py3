@@ -1,6 +1,7 @@
 from topmine_src import phrase_lda
 from topmine_src import phrase_mining
 from topmine_src import utils
+import re
 
 import numpy as np
 
@@ -75,6 +76,12 @@ def main(_):
 		examples = [line.strip() for line in frobj]
 		print(len(examples), "===before removing duplicate===")
 		examples = set(examples)
+		tmp = []
+		for example in examples:
+			re_pattern = "({}{})".format("__label__", "\d.")
+			element_list = re.split(re_pattern, line)
+			tmp.append(element_list[-1])
+		examples = set(tmp)
 		print(len(examples), "===after removing duplicate===")
 
 	def _get_stopwords(stop_word_path):
