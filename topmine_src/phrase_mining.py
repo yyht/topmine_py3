@@ -347,15 +347,20 @@ class PhraseMining(object):
 
         return self.partitioned_docs, self.index_vocab, valid_document_id
 
-    def get_frequent_phrases(self, min_support):
+    def get_frequent_phrases(self, min_support, if_only_phrase):
         """
         Returns the most frequent phrases in the corpus that occur more than 
         the minimum support in descending order of frequency
         """
+        print("--if only phrase--", if_only_phrase)
         frequent_phrases = []
         for key,value in self.true_counter.most_common():
-            if value >= min_support and len(key.split(" "))>1:
-                frequent_phrases.append((key, value))
+            if value >= min_support:
+                if if_only_phrase:
+                    if len(key.split(" "))>1:
+                        frequent_phrases.append((key, value))
+                else:
+                    frequent_phrases.append((key, value))
             elif value < min_support:
                 break
         return frequent_phrases

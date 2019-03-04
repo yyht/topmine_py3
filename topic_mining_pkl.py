@@ -58,6 +58,10 @@ flags.DEFINE_integer(
 	"max_phrase_size", 10,
 	"length of the maximum phrase size.")
 
+flags.DEFINE_bool(
+	"if_only_phrase", True,
+	"length of the maximum phrase size.")
+
 def main(_):
 	stop_word_file = FLAGS.stop_word_file
 
@@ -105,7 +109,7 @@ def main(_):
 
 	phrase_miner = phrase_mining.PhraseMining(min_support, max_phrase_size, alpha)
 	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine(examples, stopwords)
-	frequent_phrases = phrase_miner.get_frequent_phrases(min_support)
+	frequent_phrases = phrase_miner.get_frequent_phrases(min_support, FLAGS.if_only_phrase)
 	partioned_docs_path = FLAGS.ouput_file + "/partioned_docs.txt"
 	utils.store_partitioned_docs(partitioned_docs, 
 								 path=partioned_docs_path)
