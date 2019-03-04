@@ -5,8 +5,8 @@ python topic_mining_pkl.py \
 	--num_topics 2 \
 	--iteration 1000 \
 	--optimization_burnin 100 \
-	--alpha 4 \
+	--alpha 10 \
 	--optimization_iterations 50 \
 	--beta 0.02 \
-	--min_support 10 \
+	--min_support 5 \
 	--max_phrase_size 10
