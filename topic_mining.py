@@ -72,6 +72,8 @@ def main(_):
 	optimization_iterations = FLAGS.optimization_iterations
 	optimization_burnin = FLAGS.optimization_burnin
 
+	import jieba
+
 	with open(FLAGS.train_file, "r") as frobj:
 		examples = [line.strip() for line in frobj]
 		print(len(examples), "===before removing duplicate===")
@@ -80,7 +82,7 @@ def main(_):
 		for example in examples:
 			re_pattern = "({}{})".format("__label__", "\d.")
 			element_list = re.split(re_pattern, example)
-			tmp.append(element_list[-1])
+			tmp.append(" ".join(list(jieba.cut("".join(element_list[-1].split())))))
 		examples = set(tmp)
 		print(len(examples), "===after removing duplicate===")
 
