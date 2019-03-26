@@ -1,7 +1,7 @@
 python topic_mining.py \
-	--train_file "/data/xuht/politics/train.txt" \
+	--train_file "/data/xuht/test_porn/train.txt" \
 	--stop_word_file "/data/xuht/stopwords-zh-master/stopwords-zh.txt" \
-	--ouput_file "/data/xuht/politics/global_mining" \
+	--ouput_file "/data/xuht/test_porn/global_mining" \
 	--num_topics 2 \
 	--iteration 1000 \
 	--optimization_burnin 100 \
