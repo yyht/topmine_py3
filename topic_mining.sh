@@ -8,5 +8,5 @@ python topic_mining.py \
 	--alpha 4 \
 	--optimization_iterations 50 \
 	--beta 0.02 \
-	--min_support 10 \
-	--max_phrase_size 10
+	--min_support 1 \
+	--max_phrase_size 1
