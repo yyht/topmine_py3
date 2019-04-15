@@ -1,8 +1,8 @@
 from topmine_src import phrase_lda
 from topmine_src import phrase_mining
 from topmine_src import utils
-import re
-
+import re, json
+from tqdm import tqdm
 import numpy as np
 
 import tensorflow as tf
@@ -74,17 +74,23 @@ def main(_):
 
 	import jieba
 
+	# with open(FLAGS.train_file, "r") as frobj:
+	# 	examples = [line.strip() for line in frobj]
+	# 	print(len(examples), "===before removing duplicate===")
+	# 	examples = set(examples)
+	# 	tmp = []
+	# 	for example in examples:
+	# 		re_pattern = "({}{})".format("__label__", "\d.")
+	# 		element_list = re.split(re_pattern, example)
+	# 		tmp.append(" ".join(list(jieba.cut("".join(element_list[-1].split())))))
+	# 	examples = set(tmp)
+	# 	print(len(examples), "===after removing duplicate===")
+
 	with open(FLAGS.train_file, "r") as frobj:
-		examples = [line.strip() for line in frobj]
-		print(len(examples), "===before removing duplicate===")
-		examples = set(examples)
-		tmp = []
-		for example in examples:
-			re_pattern = "({}{})".format("__label__", "\d.")
-			element_list = re.split(re_pattern, example)
-			tmp.append(" ".join(list(jieba.cut("".join(element_list[-1].split())))))
-		examples = set(tmp)
-		print(len(examples), "===after removing duplicate===")
+		examples = []
+		for line in tqdm(frobj):
+			content = json.loads(line)
+			examples.append(" ".join(list(jieba.cut(content["text"]))))
 
 	def _get_stopwords(stop_word_path):
 		"""
