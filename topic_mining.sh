@@ -9,4 +9,4 @@ python topic_mining.py \
 	--optimization_iterations 50 \
 	--beta 0.02 \
 	--min_support 1 \
-	--max_phrase_size 1
+	--max_phrase_size 5
