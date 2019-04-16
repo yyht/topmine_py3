@@ -35,28 +35,32 @@ def main():
 	file_name = FLAGS.train_file
 
 	import jieba
-	with open(FLAGS.train_file, "r") as frobj:
-		examples = []
-		for line in frobj:
-			content = json.loads(line.strip())
-			examples.append(content)
 
 	with open(FLAGS.mining_info, "rb") as frobj:
 		result = pkl.load(frobj)
 
 	mined_phrases = result["frequent_phrases"]
+	vocab_index = result["index_vocab"]
+	partioned_docs = result["partitioned_docs"]
+
+	vocab2id, id2vocab = {}, {}
+	for index, word in enumerate(vocab_index):
+		vocab2id[word] = index
+		id2vocab[index] = word
+
 	phrase_count = {}
 	for item in mined_phrases:
 		phrase_count[item[0]] = {}
 		phrase_count[item[0]]["count"] = item[1]
 		phrase_count[item[0]]["label"] = []
-
-	for example in examples:
-		for item in mined_phrases:
-			if "".join(item[0].split()) in "".join(example["text"].split()):
-				phrase_count[item[0]]["label"].append(example["label"])
+	
+	for example in partioned_docs:
+		for phrase_id_lst in example:
+			phrase_string = " ".join([id2vocab[i] for i in phrase_id_lst])
+			if phrase_string in phrase_count:
+				phrase_count[phrase_string]["label"].append(example["label"])
 
 	with open(FLAGS.output_file, "wb") as fwobj:
-		pkl.dump(mined_phrases, fwobj)
+		pkl.dump(phrase_count, fwobj)
 
 main()
