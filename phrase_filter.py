@@ -2,9 +2,9 @@ from topmine_src import utils
 import re, json
 
 import numpy as np
-from flash_text import KeywordProcessor
 
 import tensorflow as tf
+from flash_text import KeywordProcessor
 
 import _pickle as pkl
 
@@ -55,20 +55,36 @@ def main():
 
 	keyword_detector = KeywordProcessor()
 
+	vocab2id, id2vocab = {}, {}
+	for index, word in enumerate(vocab_index):
+		vocab2id[word] = index
+		id2vocab[index] = word
+
 	phrase_count = {}
 	for item in mined_phrases:
-		phrase_count[item[0]] = {}
-		phrase_count[item[0]]["count"] = item[1]
-		phrase_count[item[0]]["label"] = []
-		keyword_detector.add_keyword(list("".join(item[0].split())), [item[0]])
-
-	for example in examples:
-		output = keyword_detector.extract_keywords(example["text"], span_info=True)
+		if item[0] in phrase_count:
+			phrase_count[item[0]]["count"] += item[1]
+			print(item)
+		else:
+			phrase_count[item[0]] = {}
+			phrase_count[item[0]]["count"] = item[1]
+			phrase_count[item[0]]["label"] = []
+		keyword_detector.add_keyword(item[0].split(), [item[0]])
+	print("==total mined phrases==", len(mined_phrases), "==phrase count==", len(phrase_count))
+	for index, example in zip(doc_index, partioned_docs):
+		tmp_docs = []
+		for phrase_id_lst in example:
+			phrase_string = " ".join([id2vocab[i] for i in phrase_id_lst])
+			tmp_docs.append(phrase_string)
+		tmp_docs = " ".join(tmp_docs)
+		output = keyword_detector.extract_keywords(tmp_docs.split(), span_info=True)
 		word_lst = [item[0][0] for item in output]
+		if "平台 存 违规 套现" in word_lst:
+			print(phrase_count["平台 存 违规 套现"])
 		for word in word_lst:
 			if word in phrase_count:
-				phrase_count[word]["label"].append(example["label"])
-
+				phrase_count[word]["label"].append(examples[index]["label"])
+		
 
 	with open(FLAGS.output_file, "wb") as fwobj:
 		pkl.dump(phrase_count, fwobj)
