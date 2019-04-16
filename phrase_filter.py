@@ -57,28 +57,42 @@ def main(_):
 		vocab2id[word] = index
 		id2vocab[index] = word
 
-	phrase_count = {}
+	unigram = {}
 	for item in mined_phrases:
-		phrase_count[item[0]] = item[1]
+		unigram[item[0]]["count"] = item[1]
+		unigram[item[0]]["label"] = []
+		unigram[item[0]]["ratio"] = []
 		keyword_detector.add_keyword(item[0].split(), [item[0]])
 
-	unigram = {}
-	for index, example in enumerate(examples):
-		content = list(jieba.cut(example["content"]))
-		output = keyword_detector.extract_keywords(content, span_info=True)
-		word_lst = [item[0][0] for item in output]
-		for word in word_lst:
-			if word in unigram:
-				unigram[word]["label"].append(example["label"])
-			else:
-				unigram[word]["label"] = [example["label"]]
-			if word in phrase_count:
-				unigram[word]["count"] = phrase_count[word]
-
-	print("==size of unigram==", len(unigram))
+	for index, example in zip(doc_index, partitioned_docs):
+		for phrase_id_lst in example:
+			phrase_string = " ".join([id2vocab[i] for i in phrase_id_lst])
+			if phrase_string in unigram:
+				unigram[phrase_string]["label"].append(examples[index]["label"])
 
 	for word in unigram:
 		unigram[word]["ratio"] = Counter(unigram[word]["label"])
-		
+
 	with open(FLAGS.output_file, "wb") as fwobj:
 		pkl.dump(unigram, fwobj)
+
+	# unigram = {}
+	# for index, example in enumerate(examples):
+	# 	content = list(jieba.cut(example["content"]))
+	# 	output = keyword_detector.extract_keywords(content, span_info=True)
+	# 	word_lst = [item[0][0] for item in output]
+	# 	for word in word_lst:
+	# 		if word in unigram:
+	# 			unigram[word]["label"].append(example["label"])
+	# 		else:
+	# 			unigram[word]["label"] = [example["label"]]
+	# 		if word in phrase_count:
+	# 			unigram[word]["count"] = phrase_count[word]
+
+	# print("==size of unigram==", len(unigram))
+
+	# for word in unigram:
+	# 	unigram[word]["ratio"] = Counter(unigram[word]["label"])
+		
+	# with open(FLAGS.output_file, "wb") as fwobj:
+	# 	pkl.dump(unigram, fwobj)
