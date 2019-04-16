@@ -28,7 +28,7 @@ flags.DEFINE_string(
 	"output_file", None,
 	"class-related topic and class-unrelated topic")
 
-def main(_):
+def main():
 
 	stop_word_file = FLAGS.stop_word_file
 
@@ -46,7 +46,7 @@ def main(_):
 
 	mined_phrases = result["frequent_phrases"]
 	phrase_count = {}
-	for item in phrase_count:
+	for item in mined_phrases:
 		phrase_count[item[0]] = {}
 		phrase_count[item[0]]["count"] = item[1]
 		phrase_count[item[0]]["label"] = []
@@ -54,7 +54,9 @@ def main(_):
 	for example in examples:
 		for item in mined_phrases:
 			if "".join(item[0].split()) in "".join(example["text"].split()):
-				mined_phrases[item[0]]["label"].append(example["label"])
+				phrase_count[item[0]]["label"].append(example["label"])
 
 	with open(FLAGS.output_file, "wb") as fwobj:
 		pkl.dump(mined_phrases, fwobj)
+
+main()
