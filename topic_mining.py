@@ -2,7 +2,7 @@ from topmine_src import phrase_lda
 from topmine_src import phrase_mining
 from topmine_src import utils
 import re, json
-
+from tqdm import tqdm
 import numpy as np
 
 import tensorflow as tf
@@ -88,12 +88,18 @@ def main(_):
 
 	with open(FLAGS.train_file, "r") as frobj:
 		examples = []
+
 		for line in frobj:
 			try:
 				content = json.loads(line)
 				examples.append(" ".join(list(jieba.cut(content["text"]))))
 			except:
 				continue
+
+		for line in tqdm(frobj):
+			content = json.loads(line)
+			examples.append(" ".join(list(jieba.cut(content["text"]))))
+
 
 	def _get_stopwords(stop_word_path):
 		"""
@@ -111,22 +117,22 @@ def main(_):
 	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine(examples, stopwords)
 	frequent_phrases = phrase_miner.get_frequent_phrases(min_support, if_only_phrase=False)
 	partioned_docs_path = FLAGS.ouput_file + "/partioned_docs.txt"
-	utils.store_partitioned_docs(partitioned_docs, 
+	utils.store_partitioned_docs(partitioned_docs,
 								 path=partioned_docs_path)
 	vocab_path = FLAGS.ouput_file + "/vocabs.txt"
 	utils.store_vocab(index_vocab, path=vocab_path)
 
 	frequent_phrase_path = FLAGS.ouput_file + "/frequent_phrases.txt"
-	utils.store_frequent_phrases(frequent_phrases, 
+	utils.store_frequent_phrases(frequent_phrases,
 								 path=frequent_phrase_path)
 	print("{}: total frequent phrases {}".format(file_name, len(frequent_phrases)))
-	
+
 	# print('Running PhraseLDA...')
 
 	# partitioned_docs = utils.load_partitioned_docs(path=partioned_docs_path)
 	# vocab_file = utils.load_vocab(path=vocab_path)
 
-	# plda = phrase_lda.PhraseLDA( partitioned_docs, vocab_file, num_topics , 
+	# plda = phrase_lda.PhraseLDA( partitioned_docs, vocab_file, num_topics ,
 	# 			alpha, beta, iteration, optimization_iterations, optimization_burnin);
 
 	# document_phrase_topics, most_frequent_topics, topics = plda.run()

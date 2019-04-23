@@ -1,5 +1,5 @@
 import _pickle as pkl
-data = pkl.load(open("/data/xuht/free_text/global_mining_unigram/phrase_filter.pkl", "rb"))
+data = pkl.load(open("/data/xuht/free_text_topmines/global_mining_unigram/phrase_filter.pkl", "rb"))
 
 left = []
 for key in data:
@@ -40,6 +40,8 @@ label_mapping = OrderedDict({
 })
 
 from collections import Counter
+risk_data = {}
+
 for key in data:
 	data[key]["score"] = {}
 	sub_label = []
@@ -52,9 +54,14 @@ for key in data:
 		data[key]["score"][sub_key] = float(data[key]["ratio"][sub_key]) / len(data[key]["label"])
 	if "正常" in data[key]["score"]:
 		if data[key]["score"]["正常"] == 1.0:
-			data.pop(key)
+			continue
+		else:
+			risk_data[key] = data[key]
+	else:
+		risk_data[key] = data[key]
 
-pkl.dump(data, open('/data/xuht/free_text/global_mining_unigram/phrase_filter_risk.pkl', "wb"))
+pkl.dump(risk_data, open('/data/xuht/free_text_topmines/global_mining_unigram/phrase_filter_risk.pkl', "wb"))
+
 
 
 
