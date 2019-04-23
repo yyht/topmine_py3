@@ -106,7 +106,7 @@ def main(_):
 
 	phrase_miner = phrase_mining.PhraseMining(min_support, max_phrase_size, alpha)
 	partitioned_docs, index_vocab, partitioned_indexer = phrase_miner.mine(examples, stopwords)
-	frequent_phrases = phrase_miner.get_frequent_phrases(min_support, if_only_phrase=True)
+	frequent_phrases = phrase_miner.get_frequent_phrases(min_support, if_only_phrase=False)
 	partioned_docs_path = FLAGS.ouput_file + "/partioned_docs.txt"
 	utils.store_partitioned_docs(partitioned_docs, 
 								 path=partioned_docs_path)
