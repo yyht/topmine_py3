@@ -100,9 +100,9 @@ def main(_):
 	# 	print(len(examples), "===after removing duplicate===")
 
 	train_file_list = FLAGS.train_file.split("&")
+	examples = []
 	for train_file in train_file_list:
 		with open(train_file, "r") as frobj:
-			examples = []
 			for line in tqdm(frobj):
 				try:
 					content = json.loads(line)
