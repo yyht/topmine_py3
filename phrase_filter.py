@@ -47,12 +47,23 @@ def main():
 	file_name = FLAGS.train_file
 	stopwords = _get_stopwords(stop_word_file)
 
-	import jieba
-	with open(FLAGS.train_file, "r") as frobj:
-		examples = []
-		for line in frobj:
-			content = json.loads(line.strip())
-			examples.append(content)
+	# import jieba
+	# with open(FLAGS.train_file, "r") as frobj:
+	# 	examples = []
+	# 	for line in frobj:
+	# 		content = json.loads(line.strip())
+	# 		examples.append(content)
+
+	train_file_list = FLAGS.train_file.split("&")
+	for train_file in train_file_list:
+		with open(train_file, "r") as frobj:
+			examples = []
+			for line in frobj:
+				try:
+					content = json.loads(line)
+					examples.append(content)
+				except:
+					continue
 
 	with open(FLAGS.mining_info, "rb") as frobj:
 		result = pkl.load(frobj)

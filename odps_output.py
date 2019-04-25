@@ -1,5 +1,24 @@
 import _pickle as pkl
-data = pkl.load(open("/data/xuht/free_text_topmines/global_mining_unigram/phrase_filter.pkl", "rb"))
+
+import tensorflow as tf
+
+import _pickle as pkl
+
+flags = tf.flags
+
+FLAGS = flags.FLAGS
+
+## Required parameters
+flags.DEFINE_string(
+	"phrase_filter", None,
+	"Input TF example files (can be a glob or comma separated).")
+
+flags.DEFINE_string(
+	"phrase_filter_risk", None,
+	"Input TF example files (can be a glob or comma separated).")
+
+data = pkl.load(open(FLAGS.phrase_filter, "rb"))
+# data = pkl.load(open("/data/xuht/free_text_topmines/global_mining_unigram/phrase_filter.pkl", "rb"))
 
 left = []
 for key in data:
@@ -60,8 +79,8 @@ for key in data:
 	else:
 		risk_data[key] = data[key]
 
-pkl.dump(risk_data, open('/data/xuht/free_text_topmines/global_mining_unigram/phrase_filter_risk.pkl', "wb"))
-
+# pkl.dump(risk_data, open('/data/xuht/free_text_topmines/global_mining_unigram/phrase_filter_risk.pkl', "wb"))
+pkl.dump(risk_data, open(FLAGS.phrase_filter_risk, "wb"))
 
 
 
