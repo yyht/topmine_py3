@@ -106,7 +106,8 @@ def main(_):
 			for line in tqdm(frobj):
 				try:
 					content = json.loads(line)
-					examples.append(" ".join(list(jieba.cut(clean(content["text"])))))
+					text = "".join(content["text"])
+					examples.append(" ".join(list(jieba.cut(clean(text)))))
 				except:
 					continue
 
