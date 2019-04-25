@@ -5,6 +5,7 @@ import math
 import heapq
 import sys
 from collections import OrderedDict
+from hanziconv import HanziConv
 
 CH_PUNCTUATION = u"[',\\\\n!#$%&\'()*+-/:;<=>.?@[\\]^_`{|}~'＂＃＄％＆＇，：；＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。]"
 # EN_PUNCTUATION = u"['!#$%&\'()*+,-/:;<=>?@[\\]^_`{|}~']"
@@ -28,6 +29,7 @@ def clean(text):
     text = text.strip()
     text = full2half(text)
     text = text.lower()
+    text = HanziConv.toSimplified(text)
     return text
 
 class PhraseMining(object):

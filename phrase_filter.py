@@ -2,7 +2,6 @@ from topmine_src import utils
 import re, json
 
 import numpy as np
-
 import tensorflow as tf
 from flash_text import KeywordProcessor
 from collections import Counter
@@ -29,6 +28,18 @@ flags.DEFINE_string(
 flags.DEFINE_string(
 	"output_file", None,
 	"class-related topic and class-unrelated topic")
+
+def clean(text):
+	text = text.strip()
+	text = re.sub(u"[\s\t\ue742◥ █ ◤]", "", text)
+	text = re.sub(u"\n", u"。", text)
+	text = re.sub(u"\n", "", text)
+	text = re.sub(u"\\<.*?>", "", text)
+	text = re.sub(u'&nbsp', "", text)
+	text = re.sub(u"0a", "", text)
+	text = re.sub(u"0 a", "", text)
+	# text = re.sub(u"[^\u4e00-\u9fa5^.^a-z^A-Z^0-9{}]".format(CH_PUNCTUATION), "", text)
+	return text
 
 def main():
 
@@ -61,6 +72,7 @@ def main():
 			for line in frobj:
 				try:
 					content = json.loads(line)
+					content["text"] = clean(content["text"])
 					examples.append(content)
 				except:
 					continue

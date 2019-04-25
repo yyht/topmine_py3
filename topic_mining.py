@@ -2,6 +2,7 @@ from topmine_src import phrase_lda
 from topmine_src import phrase_mining
 from topmine_src import utils
 import re, json
+from hanziconv import HanziConv
 from tqdm import tqdm
 import numpy as np
 
@@ -58,6 +59,18 @@ flags.DEFINE_integer(
 	"max_phrase_size", 10,
 	"length of the maximum phrase size.")
 
+def clean(text):
+	text = text.strip()
+	text = re.sub(u"[\s\t\ue742◥ █ ◤]", "", text)
+	text = re.sub(u"\n", u"。", text)
+	text = re.sub(u"\n", "", text)
+	text = re.sub(u"\\<.*?>", "", text)
+	text = re.sub(u'&nbsp', "", text)
+	text = re.sub(u"0a", "", text)
+	text = re.sub(u"0 a", "", text)
+	# text = re.sub(u"[^\u4e00-\u9fa5^.^a-z^A-Z^0-9{}]".format(CH_PUNCTUATION), "", text)
+	return text
+
 def main(_):
 	stop_word_file = FLAGS.stop_word_file
 
@@ -90,10 +103,10 @@ def main(_):
 	for train_file in train_file_list:
 		with open(train_file, "r") as frobj:
 			examples = []
-			for line in frobj:
+			for line in tqdm(frobj):
 				try:
 					content = json.loads(line)
-					examples.append(" ".join(list(jieba.cut(content["text"]))))
+					examples.append(" ".join(list(jieba.cut(clean(content["text"])))))
 				except:
 					continue
 
