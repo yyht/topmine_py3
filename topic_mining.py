@@ -86,20 +86,16 @@ def main(_):
 	# 	examples = set(tmp)
 	# 	print(len(examples), "===after removing duplicate===")
 
-	with open(FLAGS.train_file, "r") as frobj:
-		examples = []
-
-		for line in frobj:
-			try:
-				content = json.loads(line)
-				examples.append(" ".join(list(jieba.cut(content["text"]))))
-			except:
-				continue
-
-		for line in tqdm(frobj):
-			content = json.loads(line)
-			examples.append(" ".join(list(jieba.cut(content["text"]))))
-
+	train_file_list = FLAGS.train_file.split("&")
+	for train_file in train_file_list:
+		with open(train_file, "r") as frobj:
+			examples = []
+			for line in frobj:
+				try:
+					content = json.loads(line)
+					examples.append(" ".join(list(jieba.cut(content["text"]))))
+				except:
+					continue
 
 	def _get_stopwords(stop_word_path):
 		"""
