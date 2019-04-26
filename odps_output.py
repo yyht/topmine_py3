@@ -61,6 +61,9 @@ label_mapping = OrderedDict({
 from collections import Counter
 risk_data = {}
 
+import re
+number_pattern = re.compile('[0-9]+')
+
 for key in data:
 	data[key]["score"] = {}
 	sub_label = []
@@ -75,9 +78,33 @@ for key in data:
 		if data[key]["score"]["正常"] == 1.0:
 			continue
 		else:
+			number_len = sum([len(item) for item in number_pattern.findall(key)])
+			if number_len == len(key):
+				continue
 			risk_data[key] = data[key]
 	else:
 		risk_data[key] = data[key]
+
+# import math
+
+# def get_number_of_docs(risk_data):
+# 	doc_nums = 0
+# 	for key in risk_data:
+# 		doc_nums += len(set(risk_data[key]["doc_id"]))
+# 	return doc_nums
+
+# 	return math.log(float(1 + self.get_num_docs()) / 
+#       (1 + self.term_num_docs[term]))
+
+# def get_tfidf(risk_data):
+# 	token_nums = len(risk_data)
+# 	doc_nums = get_number_of_docs(risk_data)
+# 	for key in risk_data:
+# 		idf = math.log(float(1 + doc_nums) / (1 + len(set(risk_data[key]["doc_id"]))))
+# 		tf = risk_data[key]["count"] / token_nums
+# 		risk_data[key]["tfidf"] = tf*idf
+
+# get_tfidf(risk_data)
 
 # pkl.dump(risk_data, open('/data/xuht/free_text_topmines/global_mining_unigram/phrase_filter_risk.pkl', "wb"))
 pkl.dump(risk_data, open(FLAGS.phrase_filter_risk, "wb"))

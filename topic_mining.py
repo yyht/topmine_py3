@@ -107,6 +107,8 @@ def main(_):
 				try:
 					content = json.loads(line)
 					text = "".join(content["text"].split())
+					if len(text) >= 512:
+						continue
 					examples.append(" ".join(list(jieba.cut(clean(text)))))
 				except:
 					continue

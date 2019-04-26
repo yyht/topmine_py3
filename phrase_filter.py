@@ -131,10 +131,12 @@ def main():
 			if word in unigram:
 				unigram[word]["label"].append(example["label"])
 				unigram[word]["count"] += 1
+				unigram[word]["doc_id"].append(index)
 			else:
 				unigram[word] = {}
 				unigram[word]["label"] = [example["label"]]
 				unigram[word]["count"] = 1
+				unigram[word]["doc_id"] = [index]
 
 	print("==size of unigram==", len(unigram), len(mined_phrases))
 
