@@ -1,7 +1,7 @@
 python topic_mining.py \
 	--train_file "/data/xuht/free_text_topmines/20190424/mining_qince.txt&/data/xuht/free_text_topmines/mining_source.txt" \
 	--stop_word_file "/data/xuht/stopwords-zh-master/stopwords-zh.txt" \
-	--ouput_file "/data/xuht/free_text_topmines/20190424/global_mining_unigram" \
+	--ouput_file "/data/xuht/free_text_topmines/20190424/global_mining_unigram_short" \
 	--num_topics 2 \
 	--iteration 1000 \
 	--optimization_burnin 100 \

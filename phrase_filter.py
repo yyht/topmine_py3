@@ -76,6 +76,8 @@ def main():
 				try:
 					content = json.loads(line)
 					content["text"] = clean("".join(content["text"].split()))
+					if len(content["text"]) >= 512:
+						continue
 					examples.append(content)
 				except:
 					continue
