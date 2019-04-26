@@ -72,7 +72,7 @@ def main():
 			for line in frobj:
 				try:
 					content = json.loads(line)
-					content["text"] = clean(content["text"])
+					content["text"] = clean("".join(content["text"].split()))
 					examples.append(content)
 				except:
 					continue
