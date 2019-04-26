@@ -7,6 +7,7 @@ from flash_text import KeywordProcessor
 from collections import Counter
 import _pickle as pkl
 from topmine_src import phrase_mining
+import jieba
 
 flags = tf.flags
 
