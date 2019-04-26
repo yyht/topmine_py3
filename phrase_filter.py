@@ -8,6 +8,8 @@ from collections import Counter
 import _pickle as pkl
 from topmine_src import phrase_mining
 import jieba
+from tqdm import tqdm
+
 
 flags = tf.flags
 
@@ -70,7 +72,7 @@ def main():
 	for train_file in train_file_list:
 		with open(train_file, "r") as frobj:
 			examples = []
-			for line in frobj:
+			for line in tqdm(frobj):
 				try:
 					content = json.loads(line)
 					content["text"] = clean("".join(content["text"].split()))
@@ -120,7 +122,7 @@ def main():
 		keyword_detector.add_keyword(item[0].split(), [item[0]])
 
 	unigram = {}
-	for index, example in enumerate(examples):
+	for index, example in enumerate(tqdm(examples)):
 		content = list(jieba.cut(phrase_mining.clean(example["text"])))
 		content = [word for word in content if word not in stopwords]
 		output = keyword_detector.extract_keywords(content, span_info=True)
