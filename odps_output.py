@@ -35,28 +35,28 @@ label_count = Counter(total_label)
 
 print(list(label_count.keys()))
 
-label_mapping = OrderedDict({
-    u"一般辱骂":u"辱骂",
-    u"严重辱骂":u"辱骂",
-    u"辱骂":u"辱骂",
-    u"轻微辱骂":u"辱骂",
-    u"口头语":u"口头语",
-    u"严重色情":u"色情",
-    u"色情":u"色情",
-    u"违禁商品":u"违禁商品",
-    u"轻微色情":u"色情",
-    u"内涵":u"色情",
-    u"性知识":u"色情",
-    u"色情违禁":u"色情",
-    u"涉政":u"涉政",
-    u"涉及政治细则":u"涉政",
-    u"涉及政治负面细则":u"涉政",
-    u"广告":u"广告",
-    u"广告号":u"广告",
-    u"广告语":u"广告",
-    u"正常":u"正常",
-    u"其他类":u"其他类"
-})
+# label_mapping = OrderedDict({
+#     u"一般辱骂":u"辱骂",
+#     u"严重辱骂":u"辱骂",
+#     u"辱骂":u"辱骂",
+#     u"轻微辱骂":u"辱骂",
+#     u"口头语":u"口头语",
+#     u"严重色情":u"色情",
+#     u"色情":u"色情",
+#     u"违禁商品":u"违禁商品",
+#     u"轻微色情":u"色情",
+#     u"内涵":u"色情",
+#     u"性知识":u"色情",
+#     u"色情违禁":u"色情",
+#     u"涉政":u"涉政",
+#     u"涉及政治细则":u"涉政",
+#     u"涉及政治负面细则":u"涉政",
+#     u"广告":u"广告",
+#     u"广告号":u"广告",
+#     u"广告语":u"广告",
+#     u"正常":u"正常",
+#     u"其他类":u"其他类"
+# })
 
 from collections import Counter
 risk_data = {}
@@ -68,8 +68,8 @@ for key in data:
 	data[key]["score"] = {}
 	sub_label = []
 	for index, item in enumerate(data[key]["label"]):
-		if item in label_mapping:
-			sub_label.append(item)
+		# if item in label_mapping:
+		sub_label.append(item)
 	data[key]["label"] = sub_label
 	data[key]["ratio"] = Counter(data[key]["label"])
 	for sub_key in data[key]["ratio"]:
